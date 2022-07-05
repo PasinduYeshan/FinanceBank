@@ -13,6 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.isentgra.entgraServices.EntgraServicePackage;
+import com.isentgra.integrityAPI.IntegrityServicePackage;
+import com.oblador.keychain.KeychainPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -29,6 +31,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           packages.add(new EntgraServicePackage());
+          packages.add(new IntegrityServicePackage());
+          // packages.add(new KeychainPackage());
           return packages;
         }
 
