@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -16,6 +16,7 @@ import {
 import {GetAuthURLConfig} from '@asgardeo/auth-js';
 import {styles} from '../theme/styles';
 import Config from 'react-native-config';
+import base64 from 'react-native-base64';
 
 import {initialState, useLoginContext} from '../context/LoginContext';
 import {
@@ -23,6 +24,7 @@ import {
   disenrollDevice,
   syncDevice,
 } from '../services/entgraService';
+import {getIntegrityToken} from '../services/integrityService';
 import {wipeAll} from '../utils/Storage';
 
 // Create a config object containing the necessary configurations.
@@ -49,6 +51,7 @@ const LoginScreen = (props: {
     getAuthorizationURL,
     clearAuthResponseError,
   } = useAuthContext();
+  const [integrityToken, setIntegrityToken] = useState("");
 
   /**
    * This hook will initialize the auth provider with the config object.
@@ -131,13 +134,31 @@ const LoginScreen = (props: {
     try {
       // Sync device information to Entgra Server
       syncDevice().catch(err => console.log(err));
+      const deviceID = await getDeviceID();
+
+      const uniqueValue = 'thisis uniquecalue 213437498234r8237';
+      const nonceObject = {
+        deviceID,
+        uniqueValue,
+      };
+
+      let _integrityToken = "";
+      //TODO: Remove check and state
+      if (integrityToken == "") {
+        const nonce = base64.encode(JSON.stringify(nonceObject));
+        _integrityToken = await getIntegrityToken(nonce);
+        setIntegrityToken(_integrityToken)
+      } else {
+        _integrityToken = integrityToken;
+      }
+      
 
       let authURLConfig: GetAuthURLConfig = {};
       // Fetch device id from Entgra SDK and set it in the config object.
-      const deviceID = await getDeviceID();
       authURLConfig = {
-        device_id: deviceID,
+        deviceID,
         platformOS: Platform.OS,
+        integrityToken: _integrityToken,
         forceInit: true,
       };
       // Sign in
@@ -158,7 +179,19 @@ const LoginScreen = (props: {
    */
   const handleBackPress = async () => {
     await wipeAll();
-    props.navigation.navigate('ConsentScreen')
+    props.navigation.navigate('ConsentScreen');
+  };
+
+  const handleGetIntegrityTokenPress = async () => {
+    const deviceId = await getDeviceID();
+    const uniqueValue = 'thisis uniquecalue 213437498234r8237';
+    const nonceObject = {
+      deviceId,
+      uniqueValue,
+    };
+    const nonce = base64.encode(JSON.stringify(nonceObject));
+    const token = await getIntegrityToken(nonce);
+    console.log(token);
   };
 
   return (
@@ -179,10 +212,13 @@ const LoginScreen = (props: {
           <Button color="#282c34" onPress={handleSubmitPress} title="Login" />
         </View>
         <View style={{...styles.button, marginVertical: 10}}>
+          <Button color="#282c34" onPress={handleBackPress} title="Back" />
+        </View>
+        <View style={{...styles.button, marginVertical: 10}}>
           <Button
             color="#282c34"
-            onPress={handleBackPress}
-            title="Back"
+            onPress={handleGetIntegrityTokenPress}
+            title="Integrity Token"
           />
         </View>
         {loading ? (
