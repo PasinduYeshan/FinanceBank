@@ -55,7 +55,7 @@ You can experience the capabilities of Entgra IS React Native Sample Application
 2. Go to [https://github.com/PasinduYeshan/identity-auth-entgra](https://github.com/PasinduYeshan/identity-auth-entgra) and follow exact steps to add Entgra connector and conditional authentication function to WSO2 Identity Server.
 3. Start the WSO2 Identity server.  Login to WSO2 IS management console from [http://localhost:9443/carbon](http://localhost:9443/carbon)/ and navigate to **Service Providers** tab listed under the Identity section.
 4. Click Add to add a new service provider.
-5. Provide a name for the service provider (ex:- ISEntgra) and click **Register**. Now you will be redirected to the **Edit Service Provider** page.
+5. Provide a name for the service provider (ex:- FinanceBank) and click **Register**. Now you will be redirected to the **Edit Service Provider** page.
 6. Expand the **Inbound Authentication Configuration** section and click **Configure** under the **OAuth/OpenID Connect Configuration** section.
 7. Under **Allowed Grant Types** uncheck everything except `Code` and `Refresh Token`.
 8. Enter Callback URL(s) as for the following values.
@@ -190,7 +190,7 @@ You can experience the capabilities of Entgra IS React Native Sample Application
     `npm pack`
     
 3. Create a `.env` file inside the project folder and add the relevant configurations
-    - Replace the value of `clientID` with the value of `OAuth Client Key` or `Client ID` which you copied when you configure the Service Provider `ISEntgra`.
+    - Replace the value of `clientID` with the value of `OAuth Client Key` or `Client ID` which you copied when you configure the Service Provider `FinanceBank`.
     - Replace the `EntgraClientKey` and `EntgraClientSecret` with the values of `OAuth Client Key` or `Client ID` which you copied when you register the application in Entgra IoT server.
         
         ```jsx
