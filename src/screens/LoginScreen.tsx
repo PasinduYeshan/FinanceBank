@@ -16,7 +16,7 @@ import {
 import {GetAuthURLConfig} from '@asgardeo/auth-js';
 import {styles} from '../theme/styles';
 import Config from 'react-native-config';
-import base64 from 'react-native-base64';
+import base64 from 'react-native-base64'
 
 import {initialState, useLoginContext} from '../context/LoginContext';
 import {
